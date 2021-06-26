@@ -18,11 +18,16 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('save', function (next) {
-  if (this.password) {
-    let salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
-    this.password = bcrypt.hashSync(this.password, salt);
-  }
-  next();
+  const user = this;
+  bcrypt.hash(user.password, SALT_WORK_FACTOR, function (err, hash) {
+    if (err) console.log(err);
+    user.password = hash;
+    return next();
+  });
 });
+userSchema.methods.comparePassword = function (potentialPass) {
+  const user = this;
+  return bcrypt.compare(potentialPass, user.password);
+};
 
 module.exports = mongoose.model('User', userSchema);
