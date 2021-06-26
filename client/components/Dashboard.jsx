@@ -18,12 +18,14 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems } from './mainListItems';
+import { MainListItems } from './mainListItems';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { red, yellow } from '@material-ui/core/colors';
+import { ClassRounded } from '@material-ui/icons';
+import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 // import Chart from './Chart';
 
 
@@ -142,6 +144,16 @@ const useStyles = makeStyles((theme) => ({
     background: 'linear-gradient(red, orange)',
     color: 'white',
   },
+  controls: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  playIcon: {
+    height: 38,
+    width: 38,
+  },
 }));
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -161,7 +173,8 @@ export default function Dashboard() {
     //   let newWater = nextWater.Date();
       //mongoDB returns date as a string
       let currDate = new Date();
-    if (nextWater > currDate){
+    if (nextWater < currDate){
+        console.log('We are here')
         return classes.dangerCard
     }
   }
@@ -203,7 +216,7 @@ export default function Dashboard() {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <List>{mainListItems}</List>
+        <List><MainListItems /></List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -212,7 +225,7 @@ export default function Dashboard() {
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={getCardClass()}>
+                <Card className={getCardClass(nextWater)} >
                   <CardMedia
                     className={classes.cardMedia}
                     image="https://source.unsplash.com/random"
@@ -226,6 +239,11 @@ export default function Dashboard() {
                       This is a media card. You can use this section to describe the content.
                     </Typography>
                   </CardContent>
+                  <div className={classes.controls}>
+                  <IconButton aria-label="play/pause">
+            <LocalDrinkIcon className={classes.playIcon} />
+          </IconButton>
+                      </div>
                   <CardActions>
                   </CardActions>
                 </Card>
