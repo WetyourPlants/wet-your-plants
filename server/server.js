@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
@@ -34,21 +34,20 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/build', express.static(path.resolve(__dirname, '../build')));
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
 // need to check if logged in via session controller
 //need to modify this to send the  user data along with the landing page???
-app.get('/home', sessionController.isLoggedIn,plantController.getPlants, (req, res) => {
-
-
-//need to render the landing page with the following json passed as to the get request  
+app.get('/home', sessionController.isLoggedIn, (req, res) => {
+  //need to render the landing page with the following json passed as to the get request
   // res.json({
   //   user: res.locals.user,
   //   plantNames : res.locals.plantNames
   // })
-  return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
+  console.log('inside get home');
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
 // login route to verify user exists in database, set ssid cookie, start session,
@@ -58,9 +57,10 @@ app.post(
   userController.verifyUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
-  
+
   (req, res) => {
-    res.redirect('/home');
+    console.log('Right before home');
+    res.status(200).json(true);
   }
 );
 
@@ -105,7 +105,6 @@ app.delete(
     res.status(200).json(res.locals.user);
   }
 );
-
 
 // global error handler
 app.use((err, req, res, next) => {
