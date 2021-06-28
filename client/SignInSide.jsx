@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Dashboard from './components/Dashboard';
+import { BrowserRouter as useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -73,20 +74,21 @@ export default function SignInSide() {
   //     body: JSON.stringify({})
   //   }
   // })
-
+  let history = useHistory();
   const onSubmit = () => {
-    // console.log(username);
-    console.log(email);
-    console.log(password);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: email, password }),
     };
 
-    fetch('/login', requestOptions).then((res) => {
-      console.log(res);
-    });
+    fetch('/login', requestOptions)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res === true) {
+          history.push('/home');
+        }
+      });
   };
 
   return (

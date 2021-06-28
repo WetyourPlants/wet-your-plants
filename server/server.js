@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/build', express.static(path.resolve(__dirname, '../build')));
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
@@ -46,7 +46,8 @@ app.get('/home', sessionController.isLoggedIn, (req, res) => {
   //   user: res.locals.user,
   //   plantNames : res.locals.plantNames
   // })
-  return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
+  console.log('inside get home');
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
 // login route to verify user exists in database, set ssid cookie, start session,
@@ -58,7 +59,8 @@ app.post(
   sessionController.startSession,
 
   (req, res) => {
-    res.redirect('/home');
+    console.log('Right before home');
+    res.status(200).json(true);
   }
 );
 
