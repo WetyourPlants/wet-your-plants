@@ -12,7 +12,14 @@ const userSchema = new Schema({
   plantList: [
     {
       name: { type: String },
-      healthinfo: { type: String },
+      healthInfo: { type: String },
+      schedule: { type: String },
+      lastWatered: { type: Date },
+      nextWater: { type: Date },
+      plantInfo: {
+        type: Schema.Types.ObjectId,
+        ref: 'plant',
+      },
     },
   ],
 });

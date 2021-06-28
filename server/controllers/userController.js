@@ -30,7 +30,9 @@ userController.verifyUser = (req, res, next) => {
   User.findOne({ username: req.body.username })
     .then((user) => {
       // this comparePassword only works when you add the method onto the user model (NOTE: add once I merge with Prasad)
+      console.log('Hit verify user');
       if (user.comparePassword(req.body.password)) {
+        console.log('Comparedpassword worked');
         res.locals.user = user;
         return next();
       } else {

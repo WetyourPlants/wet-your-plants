@@ -1,21 +1,20 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 //import required controllers
-const userController = require('./controllers/userController')
-const sessionController = require('./controllers/sessionController')
-const cookieController = require('./controllers/cookieController')
+const userController = require('./controllers/userController');
+const sessionController = require('./controllers/sessionController');
+const cookieController = require('./controllers/cookieController');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 //define and connect to database
-  //currently set to local database: need to be replaced with Cloud (mongo Atlas) server??
-const mongoURI = "mongodb://localhost/wetYourPlants";
-mongoose.connect(mongoURI)
-
-
+//currently set to local database: need to be replaced with Cloud (mongo Atlas) server??
+const mongoURI =
+  'mongodb+srv://wet-your-plants:plants2021@cluster0.iounu.mongodb.net/wetYourPlants?retryWrites=true&w=majority';
+mongoose.connect(mongoURI);
 
 PORT = 3000;
 
@@ -52,7 +51,9 @@ app.post(
   userController.createUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
-  (req, res) => {}
+  (req, res) => {
+    res.redirect('/home');
+  }
 );
 
 // global error handler
