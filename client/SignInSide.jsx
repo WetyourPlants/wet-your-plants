@@ -63,7 +63,7 @@ export default function SignInSide() {
   const classes = useStyles();
 
 const [isLoggedIn, setIsLoggedIn ] = useState(false)
-const [email, setEmail ] = useState('');
+const [username, setUsername ] = useState('');
 const [password, setPassword ] = useState('');
 
 // useEffect(() => {
@@ -78,12 +78,11 @@ const onSubmit = () => {
     const requestOptions = {
     method: 'POST', 
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({username: email, password})
+    body: JSON.stringify({username, password})
   };
 
   fetch('/login', requestOptions)
-    .then(res => res.json())
-    .then(data => setIsLoggedIn(true))
+   
 }
 
 if (isLoggedIn){
@@ -108,13 +107,13 @@ if (isLoggedIn){
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
+              value={username}
+              onChange={(e) => setUsername(e.currentTarget.value)}
             />
             <TextField
               variant="outlined"

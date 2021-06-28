@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState}from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -161,6 +161,55 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [cards, setCards] = useState(cards);
+
+
+  useEffect(() => {
+    console.log("I am using effect")
+    fetch("/home/getPlants")
+    .then((res) => res.json())
+    .then(res => {
+    console.log(res)
+    setCards(res ||[])
+    })       
+}, []);
+
+//display individual cards here
+
+
+// const waterClick = () => {
+//   const requestOptions = {
+//     method: 'PATCH',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({lastWaterDate})
+//   }
+//   fetch('/updateuserplant', requestOptions)
+//   .then(res => res.json())
+//   .then(data => )
+// }
+
+// const addPlantClick = () => {
+//   const requestOptions = {
+//     method: 'PATCH',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({lastWaterDate})
+//   }
+//   fetch('/adduserplant', requestOptions)
+//   .then(res => res.json())
+//   .then(data => )
+// }
+
+// const deletePlantClick = () => {
+//   const requestOptions = {
+//     method: 'PATCH',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({lastWaterDate})
+//   }
+//   fetch('/deleteuserplant', requestOptions)
+//   .then(res => res.json())
+//   .then(data => )
+// }
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
