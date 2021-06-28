@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,15 +12,16 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Dashboard from './components/Dashboard';
+
+
 
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Wet Your Plants
-      </Link>{' '}
+        Wet Your Plants  
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -60,16 +61,36 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
-//need to usestate here
+
+const [isLoggedIn, setIsLoggedIn ] = useState(false)
+const [email, setEmail ] = useState('');
+const [password, setPassword ] = useState('');
 
 // useEffect(() => {
 //   const requestOptions = {
 //     method: 'POST', 
+//     headers: { 'Content-Type': 'application/json' },
 //     body: JSON.stringify({})
 //   }
 // })
 
+const onSubmit = () => {
+    const requestOptions = {
+    method: 'POST', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({username: email, password})
+  };
 
+  fetch('/login', requestOptions)
+    .then(res => res.json())
+    .then(data => setIsLoggedIn(true))
+}
+
+if (isLoggedIn){
+  return (
+    <Dashboard />
+  )
+}
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -82,7 +103,6 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -93,6 +113,8 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
             />
             <TextField
               variant="outlined"
@@ -104,6 +126,8 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -115,6 +139,9 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={onSubmit}
+              
+              
             >
               Sign In
             </Button>
@@ -133,7 +160,6 @@ export default function SignInSide() {
             <Box mt={5}>
               <Copyright />
             </Box>
-          </form>
         </div>
       </Grid>
     </Grid>
