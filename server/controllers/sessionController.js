@@ -11,6 +11,7 @@ sessionController.startSession = (req, res, next) => {
       return next();
     })
     .catch((err) => {
+      console.log(err);
       if (err.code === 11000) {
         return next();
       }
@@ -21,10 +22,11 @@ sessionController.startSession = (req, res, next) => {
 // isLoggedIn - verifies if user is logged in and allows access to /home,
 // otherwise it redirects to sign in page which is our root
 sessionController.isLoggedIn = (req, res, next) => {
-  console.log('Inside IsLoggedIn controller')
+  console.log('Inside IsLoggedIn controller');
   Session.findOne({ cookieId: req.cookies.ssid })
     .then((result) => {
       if (result) {
+        console.log('found result');
         return next();
       } else {
         res.redirect('/');

@@ -26,14 +26,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { red, yellow } from '@material-ui/core/colors';
 import { ClassRounded } from '@material-ui/icons';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
+import { useEffect, useState } from 'react';
 // import Chart from './Chart';
-
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color='inherit' href='https://material-ui.com/'>
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -159,6 +159,10 @@ const useStyles = makeStyles((theme) => ({
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function Dashboard() {
+  console.log('Hit dashboard');
+  useEffect(() => {
+    console.log('Inside use effect');
+  }, []);
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [cards, setCards] = useState(cards);
@@ -220,88 +224,102 @@ export default function Dashboard() {
   let nextWater = new Date('2015-10-10');
   const getCardClass = (nextWater) => {
     //   let newWater = nextWater.Date();
-      //mongoDB returns date as a string
-      let currDate = new Date();
-    if (nextWater < currDate){
-        console.log('We are here')
-        return classes.dangerCard
+    //mongoDB returns date as a string
+    let currDate = new Date();
+    if (nextWater < currDate) {
+      console.log('We are here');
+      return classes.dangerCard;
     }
-  }
+  };
 
   return (
     <React.Fragment>
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <List><MainListItems /></List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={getCardClass(nextWater)} >
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the content.
-                    </Typography>
-                  </CardContent>
-                  <div className={classes.controls}>
-                  <IconButton aria-label="play/pause">
-            <LocalDrinkIcon className={classes.playIcon} />
-          </IconButton>
-                      </div>
-                  <CardActions>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-    </div>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar
+          position='absolute'
+          className={clsx(classes.appBar, open && classes.appBarShift)}
+        >
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge='start'
+              color='inherit'
+              aria-label='open drawer'
+              onClick={handleDrawerOpen}
+              className={clsx(
+                classes.menuButton,
+                open && classes.menuButtonHidden
+              )}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component='h1'
+              variant='h6'
+              color='inherit'
+              noWrap
+              className={classes.title}
+            >
+              Dashboard
+            </Typography>
+            <IconButton color='inherit'>
+              <Badge badgeContent={4} color='secondary'>
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant='permanent'
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <List>
+            <MainListItems />
+          </List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container className={classes.cardGrid} maxWidth='md'>
+            {/* End hero unit */}
+            <Grid container spacing={4}>
+              {cards.map((card) => (
+                <Grid item key={card} xs={12} sm={6} md={4}>
+                  <Card className={getCardClass(nextWater)}>
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image='https://source.unsplash.com/random'
+                      title='Image title'
+                    />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant='h5' component='h2'>
+                        Heading
+                      </Typography>
+                      <Typography>
+                        This is a media card. You can use this section to
+                        describe the content.
+                      </Typography>
+                    </CardContent>
+                    <div className={classes.controls}>
+                      <IconButton aria-label='play/pause'>
+                        <LocalDrinkIcon className={classes.playIcon} />
+                      </IconButton>
+                    </div>
+                    <CardActions></CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </main>
+      </div>
     </React.Fragment>
   );
 }
