@@ -87,7 +87,7 @@ app.post(
 );
 
 // update Plant to user collection in the database
-app.post(
+app.patch(
   '/updateuserplant',
   sessionController.isLoggedIn,
   userPlantController.updatePlant,
@@ -95,6 +95,17 @@ app.post(
     res.status(200).json(res.locals.user);
   }
 );
+
+// delete Plant from the User Plant collection in the database
+app.delete(
+  '/deleteuserplant',
+  sessionController.isLoggedIn,
+  userPlantController.deletePlant,
+  (req, res) => {
+    res.status(200).json(res.locals.user);
+  }
+);
+
 
 // global error handler
 app.use((err, req, res, next) => {

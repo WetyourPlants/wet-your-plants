@@ -191,7 +191,7 @@ userPlantController.deletePlant = async (req, res, next) => {
     //console.log()
 
     // get the name, healthInfo & lastWatered info from the request body
-    const { nickname, planttype, healthInfo, lastWatered } = req.body;
+    const { nickname, planttype} = req.body;
 
     //get the plant and index of the plant (from the user.plantList array) matching plant nickname the req body nickname
     const plant = userPlants.find((el) => el.nickname === nickname);
