@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
@@ -39,15 +39,23 @@ app.get('/', (req, res) => {
 });
 
 // need to check if logged in via session controller
-//need to modify this to send the  user data along with the landing page???
-app.get('/home', sessionController.isLoggedIn,plantController.getPlants, (req, res) => {
+//get the UserPlant details along with the list of Plants Types from the database
+app.get(
+  '/home/getPlants',
+  userController.getUserPlants,
+  plantController.getPlants,
+  (req, res) => {
+    //need to render the landing page with the following json passed as to the get request
 
+    return res.status(200).json({
+      plantList: res.locals.userPlants,
+      dbplantTypes: res.locals.plantTypes,
+    });
+  }
+);
 
-//need to render the landing page with the following json passed as to the get request  
-  // res.json({
-  //   user: res.locals.user,
-  //   plantNames : res.locals.plantNames
-  // })
+// need to check if logged in via session controller
+app.get('/home', sessionController.isLoggedIn, (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
@@ -58,7 +66,7 @@ app.post(
   userController.verifyUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
-  
+
   (req, res) => {
     res.redirect('/home');
   }
@@ -105,7 +113,6 @@ app.delete(
     res.status(200).json(res.locals.user);
   }
 );
-
 
 // global error handler
 app.use((err, req, res, next) => {
