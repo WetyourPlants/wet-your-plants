@@ -7,6 +7,8 @@ const userController = {};
 
 userController.createUser = (req, res, next) => {
   // NOTE: add .pre to user model to hash and use bcrypt on the password before it's sent to the database
+  console.log('Inside createUser');
+
   User.create(
     {
       username: req.body.username,
@@ -17,8 +19,12 @@ userController.createUser = (req, res, next) => {
     },
     (err, result) => {
       if (err) {
-        return next(err);
+        return next({
+          log: `Error in userController.createUser, Error Message: ${err}`,
+          message: `Error in the userController.createUser, check log for details `,
+        });
       }
+
       res.locals.user = result;
       return next();
     }
@@ -27,10 +33,12 @@ userController.createUser = (req, res, next) => {
 
 // verify user
 userController.verifyUser = (req, res, next) => {
+  console.log(req.body);
   User.findOne({ username: req.body.username })
     .then((user) => {
       // this comparePassword only works when you add the method onto the user model (NOTE: add once I merge with Prasad)
       console.log('Hit verify user');
+      console.log(user);
       if (user.comparePassword(req.body.password)) {
         console.log('Comparedpassword worked');
         res.locals.user = user;
@@ -40,7 +48,10 @@ userController.verifyUser = (req, res, next) => {
       }
     })
     .catch((err) => {
-      return next(err);
+      return next({
+        log: `Error in userController.verifyUser, Error Message: ${err}`,
+        message: `Error in the userController.verifyUser, check log for details `,
+      });
     });
 };
 

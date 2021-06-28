@@ -1,7 +1,41 @@
-const User = require('../models/plantModel');
+//require in plant from the plantModel
+const Plant = require('../models/plantModel');
 
 const plantController = {};
 
-// check if plant exists in database
+plantController.addPlant = (req, res, next) => {
+  Plant.create(
+    {
+      name: req.body.name,
+      imageUrl: req.body.imageUrl,
+      desc: req.body.desc,
+      schedule: req.body.schedule,
+    },
+    (err, result) => {
+      if (err) {
+        return next(err);
+      }
+      res.locals.plant = result;
+      return next();
+    }
+  );
+};
+
+plantController.getPlants = (req, res, next) => {
+  console.log('inside plant controller');
+  Plant.find({}, 'name')
+    .exec()
+    .then((plantNames) => {
+      // console.log(plantNames.map((el) => el.name));
+      res.locals.plantTypes = plantNames.map((el) => el.name);
+      return next();
+    })
+    .catch((err) => {
+      next({
+        log: `Error in plantController.getPlants, Error Message: ${err}`,
+        message: `Error in the plantController.getPlants, check log for details `,
+      });
+    });
+};
 
 module.exports = plantController;
