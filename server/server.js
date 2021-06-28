@@ -33,6 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/build', express.static(path.resolve(__dirname, '../build')));
+app.use('/assets', express.static(path.resolve(__dirname, '../assets')));
 
 app.get('/home/getPlants', userController.getUserPlants, (req, res) => {
   //need to render the landing page with the following json passed as to the get request
@@ -46,6 +47,10 @@ app.get('/home/getPlants', userController.getUserPlants, (req, res) => {
 
 app.get('/home', sessionController.isLoggedIn, (req, res) => {
   console.log('inside get home');
+  res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
+
+app.get('/signup', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
@@ -91,7 +96,7 @@ app.post(
   sessionController.isLoggedIn,
   userPlantController.addPlant,
   (req, res) => {
-    res.redirect('/home/getPlants');
+    res.status(200).json(res.locals.user);
   }
 );
 

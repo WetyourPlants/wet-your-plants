@@ -14,24 +14,24 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
-export const MainListItems = () => {
+export const MainListItems = (props) => {
   const [open, setOpen] = useState(false);
   const [add, setAdd] = useState([]);
   const [planttype, setType] = useState('');
   const [nickname, setNickname] = useState('');
   const [lastWatered, setLastWatered] = useState('');
   const refHook = useRef(false);
+  const [renderStatus, setRenderStatus] = useState(true);
   const handleClickOpen = () => {
     setOpen(true);
   };
+  // const [cards, setCards] = useState([]);
 
   const handleClose = () => {};
 
   const addPlantClick = (info) => {
-    console.log('info: ', info.target);
-    console.log('info:', info.currentTarget);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -40,7 +40,7 @@ export const MainListItems = () => {
     fetch('/adduserplant', requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        props.handleAdd(data.plantList);
         setOpen(false);
       });
   };

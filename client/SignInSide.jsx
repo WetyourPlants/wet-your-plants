@@ -14,6 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Dashboard from './components/Dashboard';
 import { useHistory } from 'react-router-dom';
+// import loginImage from '../assets/wetyourplants.png';
+// import image from '../assets/plant.png';
 
 function Copyright() {
   return (
@@ -31,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage:
-      'url(https://lh3.googleusercontent.com/pIWn3qkeq2eg_vq3FwF2hujYm4KydZkv8rdkjO_qT2o6uJAigUzXGyBXUY9bKFCn_N5d6G6HkEmoukQUi0C3gEUxuhzm6IdD2NEquR-y8pu7yAZdx6Co62l04wfIwOUvxfh0rQUxXNGP5GEO2_2uwLPB4wM8OUlIqTLzJ0v8WZQ4y-A5Ar8oBZzk7nWoa5Y2j-le5cIGVOpRFH3na1hUJLp3S7q4aYjkYvvQxdAJK55fdHNyTeCY4HlrRV094561ubDmQYwjdizq2HMLVpq1yQdhN-rW5ncI7MauQmyp61i2EV9FinmgHuy17-jTtUMiBw6WxWsBjjx8H1eAXLMo3wSHnQDgFm6DSuSBGZsU1rrYwxpjmEfGo9onMupm4ChoBQzaPuqng1O7PuhmVYCUKm_PybEX5NCv-Rdfro_-Z4BXxjgQToFqUbF4NuhjC3lS8rklj8riJb0I6MPmz8cmpMD8ASbwx4ByhDJ5PWHzHLtt57q_JGhESVg39bJTSsXpJ5eVZSzMa94_U_vz0JxJnyLjEdSIZr7WcD3JkOYp2Ii-qLFlr-fk94eFpxsOQJdELRq3L1F2S1w35ZoU24H5AIKZZu1Ln3NF9ByIHpRceB5cIBxlnQmkKHhM7VEpJGri0F5305fG-z0wv_z6PyhC21xFc6eSa_M9RwM36t1ko25pEXsX98lzLAnpesPJzZY0XwlonWdyAdooZucw_S5Xe-6f=w988-h1482-no?authuser=0)',
+    backgroundImage: `url(https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/What-Are-Plants.jpg)`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light'
@@ -153,7 +154,7 @@ export default function SignInSide() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link href='/signup' variant='body2'>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

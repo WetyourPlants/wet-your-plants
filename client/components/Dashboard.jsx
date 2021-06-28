@@ -207,6 +207,10 @@ export default function Dashboard() {
         setOpen(false);
       });
   };
+
+  function handleAdd(event) {
+    setCards(event || []);
+  }
   // const deletePlantClick = () => {
   //   const requestOptions = {
   //     method: 'PATCH',
@@ -283,7 +287,7 @@ export default function Dashboard() {
             </IconButton>
           </div>
           <List>
-            <MainListItems />
+            <MainListItems handleAdd={handleAdd} setCards={setCards} />
           </List>
         </Drawer>
         <main className={classes.content}>
