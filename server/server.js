@@ -1,29 +1,29 @@
 const express = require('express');
 const app = express();
-const path = require("path");
-const mongoose = require("mongoose");
+const path = require('path');
+const mongoose = require('mongoose');
 
 //import required controllers
-const userController = require("./controllers/userController");
-const sessionController = require("./controllers/sessionController");
-const cookieController = require("./controllers/cookieController");
-const userPlantController = require("./controllers/userPlantController");
-const plantController = require("./controllers/plantController");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+const userController = require('./controllers/userController');
+const sessionController = require('./controllers/sessionController');
+const cookieController = require('./controllers/cookieController');
+const userPlantController = require('./controllers/userPlantController');
+const plantController = require('./controllers/plantController');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 //define and connect to database
 //currently set to local database: need to be replaced with Cloud (mongo Atlas) server??
 const mongoURI =
-  "mongodb+srv://wet-your-plants:plants2021@cluster0.iounu.mongodb.net/wetYourPlants?retryWrites=true&w=majority";
+  'mongodb+srv://wet-your-plants:plants2021@cluster0.iounu.mongodb.net/wetYourPlants?retryWrites=true&w=majority';
 mongoose
   .connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    dbName: "wetYourPlants",
+    dbName: 'wetYourPlants',
   })
-  .then(() => console.log("Connected to Mongo DB."))
+  .then(() => console.log('Connected to Mongo DB.'))
   .catch((err) => console.log(err));
 
 PORT = 3000;
@@ -32,15 +32,14 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/build", express.static(path.resolve(__dirname, "../build")));
+app.use('/build', express.static(path.resolve(__dirname, '../build')));
 
-
-app.get("/", (req, res) => {
-  return res.status(200).sendFile(path.resolve(__dirname, "../index.html"));
+app.get('/', (req, res) => {
+  return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
+});
 
 app.get('*', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
-
 });
 
 // need to check if logged in via session controller
@@ -62,11 +61,11 @@ app.get(
 // need to check if logged in via session controller
 app.get('/home', sessionController.isLoggedIn, (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
-
+});
 //need to modify this to send the  user data along with the landing page???
 
 app.get(
-  "/home",
+  '/home',
   sessionController.isLoggedIn,
   plantController.getPlants,
   (req, res) => {
@@ -75,7 +74,7 @@ app.get(
       user: res.locals.user,
       plantNames: res.locals.plantNames,
     });
-    return res.status(200).sendFile(path.resolve(__dirname, "../index.html"));
+    return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
   }
 );
 
@@ -87,43 +86,39 @@ app.get('/home', sessionController.isLoggedIn, (req, res) => {
   // })
   console.log('inside get home');
   res.status(200).sendFile(path.join(__dirname, '../index.html'));
-
 });
-
 
 // login route to verify user exists in database, set ssid cookie, start session,
 // and then it redirects to the /home landing page
 app.post(
-  "/login",
+  '/login',
   userController.verifyUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
 
   (req, res) => {
-
-    res.redirect("/home");
+    res.redirect('/home');
 
     console.log('Right before home');
     res.status(200).json(true);
-
   }
 );
 
 // create user in database, set ssid cookie, start session
 
 app.post(
-  "/signup",
+  '/signup',
   userController.createUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
   (req, res) => {
-    res.redirect("/home");
+    res.redirect('/home');
   }
 );
 
 // add Plant to user collection in the database
 app.post(
-  "/adduserplant",
+  '/adduserplant',
   sessionController.isLoggedIn,
   userPlantController.addPlant,
   (req, res) => {
@@ -133,7 +128,7 @@ app.post(
 
 // update Plant to user collection in the database
 app.patch(
-  "/updateuserplant",
+  '/updateuserplant',
   sessionController.isLoggedIn,
   userPlantController.updatePlant,
   (req, res) => {
@@ -143,7 +138,7 @@ app.patch(
 
 // delete Plant from the User Plant collection in the database
 app.delete(
-  "/deleteuserplant",
+  '/deleteuserplant',
   sessionController.isLoggedIn,
   userPlantController.deletePlant,
   (req, res) => {
@@ -154,15 +149,15 @@ app.delete(
 // global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {
-    log: "Express error handler caught unknown middleware error",
+    log: 'Express error handler caught unknown middleware error',
     status: 400,
-    message: { err: "An error occurred" },
+    message: { err: 'An error occurred' },
   };
   const errObj = Object.assign(defaultErr, err);
-  console.log("Error: ", errObj.log);
+  console.log('Error: ', errObj.log);
   res.status(errObj.status).send(errObj.message);
 });
 
-module.exports = app.listen(PORT, () =>
-  console.log(`Listening on port ${PORT}`)
-);
+module.exports = app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});

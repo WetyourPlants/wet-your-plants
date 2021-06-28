@@ -63,14 +63,13 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInSide() {
   const classes = useStyles();
 
-const [isLoggedIn, setIsLoggedIn ] = useState(false)
-const [username, setUsername ] = useState('');
-const [password, setPassword ] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
 
   // useEffect(() => {
   //   const requestOptions = {
@@ -82,16 +81,6 @@ const [password, setPassword ] = useState('');
   let history = useHistory();
   const onSubmit = () => {
     const requestOptions = {
-
-    method: 'POST', 
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({username, password})
-  };
-
-  fetch('/login', requestOptions)
-   
-}
-
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: email, password }),
@@ -106,7 +95,6 @@ const [password, setPassword ] = useState('');
       });
   };
 
-
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
@@ -120,72 +108,18 @@ const [password, setPassword ] = useState('');
             Sign in
           </Typography>
 
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.currentTarget.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={onSubmit}
-              
-              
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-
           <TextField
             variant='outlined'
             margin='normal'
             required
             fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
+            id='username'
+            label='Username'
+            name='username'
+            autoComplete='username'
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
+            value={username}
+            onChange={(e) => setUsername(e.currentTarget.value)}
           />
           <TextField
             variant='outlined'
@@ -219,17 +153,69 @@ const [password, setPassword ] = useState('');
               <Link href='#' variant='body2'>
                 Forgot password?
               </Link>
-
             </Grid>
             <Grid item>
               <Link href='#' variant='body2'>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
+
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
+            />
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              name='password'
+              label='Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
+            />
+            <FormControlLabel
+              control={<Checkbox value='remember' color='primary' />}
+              label='Remember me'
+            />
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              onClick={onSubmit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href='#' variant='body2'>
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href='#' variant='body2'>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
           </Grid>
-          <Box mt={5}>
-            <Copyright />
-          </Box>
         </div>
       </Grid>
     </Grid>
