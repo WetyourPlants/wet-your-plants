@@ -20,13 +20,18 @@
   },
   "homepage": "https://github.com/WetyourPlants/wet-your-plants#readme",
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "browserify": "^17.0.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "formik": "^2.2.9",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "typography": "^0.16.21",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
