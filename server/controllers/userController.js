@@ -55,4 +55,21 @@ userController.verifyUser = (req, res, next) => {
     });
 };
 
+
+userController.getUserPlants = (req, res, next) => {
+  User.findOne({ _id: req.cookies.ssid })
+    .then((user) => {
+      // find the user and set the resl.locals.user to the user
+      res.locals.userPlants = user.plantList;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: `Error in userController.findUser, Error Message: ${err}`,
+        message: `Error in the userController.findUser, check log for details `,
+      });
+    });
+};
+
+
 module.exports = userController;
