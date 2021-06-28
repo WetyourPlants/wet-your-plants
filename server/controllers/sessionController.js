@@ -5,6 +5,7 @@ const sessionController = {};
 
 // start session stores the current cookie ssid aka the user's id in a separate session controller to verify if a user can access the site
 sessionController.startSession = (req, res, next) => {
+  console.log('Inside session controller');
   Session.create({ cookieId: res.locals.user.id })
     .then((result) => {
       return next();
@@ -20,6 +21,7 @@ sessionController.startSession = (req, res, next) => {
 // isLoggedIn - verifies if user is logged in and allows access to /home,
 // otherwise it redirects to sign in page which is our root
 sessionController.isLoggedIn = (req, res, next) => {
+  console.log('Inside IsLoggedIn controller')
   Session.findOne({ cookieId: req.cookies.ssid })
     .then((result) => {
       if (result) {

@@ -1,12 +1,15 @@
 // require in user from usermodel
 const User = require('../models/userModel');
 
+
 const userController = {};
 
 // create user
 
 userController.createUser = (req, res, next) => {
   // NOTE: add .pre to user model to hash and use bcrypt on the password before it's sent to the database
+  console.log('Inside createUser');
+
   User.create(
     {
       username: req.body.username,
@@ -17,8 +20,12 @@ userController.createUser = (req, res, next) => {
     },
     (err, result) => {
       if (err) {
-        return next(err);
+        return next({
+          log: `Error in userController.createUser, Error Message: ${err}`,
+          message: `Error in the userController.createUser, check log for details `,
+        });
       }
+
       res.locals.user = result;
       return next();
     }
@@ -38,8 +45,12 @@ userController.verifyUser = (req, res, next) => {
       }
     })
     .catch((err) => {
-      return next(err);
+      return next({
+        log: `Error in userController.verifyUser, Error Message: ${err}`,
+        message: `Error in the userController.verifyUser, check log for details `,
+      });
     });
 };
+
 
 module.exports = userController;
