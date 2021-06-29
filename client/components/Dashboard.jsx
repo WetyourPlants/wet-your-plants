@@ -1,4 +1,4 @@
-import React, {useEffect, useState}from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -26,7 +26,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { red, yellow } from '@material-ui/core/colors';
 import { ClassRounded } from '@material-ui/icons';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import { useEffect, useState } from 'react';
+import moment from 'moment';
 // import Chart from './Chart';
 
 function Copyright() {
@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function Dashboard() {
   console.log('Hit dashboard');
@@ -165,54 +165,66 @@ export default function Dashboard() {
   }, []);
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [cards, setCards] = useState(cards);
-
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    console.log("I am using effect")
-    fetch("/home/getPlants")
-    .then((res) => res.json())
-    .then(res => {
-    console.log(res)
-    setCards(res ||[])
-    })       
-}, []);
+    console.log('I am using effect');
+    fetch('/home/getPlants')
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.plantList[0].plantInfo);
+        setCards(res.plantList || []);
+      });
+  }, []);
+  console.log(cards);
 
-//display individual cards here
+  const waterClick = (cardDet) => {
+    console.log(cardDet);
+    const requestOptions = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nickname: cardDet.nickname,
+        planttype: cardDet.planttype,
+        healthInfo: cardDet.healthInfo,
+        lastWatered: new Date(),
+      }),
+    };
+    fetch('/updateuserplant', requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('updated user plant after water???');
+        console.log(data);
+        setCards(data.plantList || []);
+      });
+  };
+  const addPlant = (event) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nickname, planttype, lastWatered }),
+    };
+    fetch('/adduserplant', requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setOpen(false);
+      });
+  };
 
-
-// const waterClick = () => {
-//   const requestOptions = {
-//     method: 'PATCH',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({lastWaterDate})
-//   }
-//   fetch('/updateuserplant', requestOptions)
-//   .then(res => res.json())
-//   .then(data => )
-// }
-
-// const addPlantClick = () => {
-//   const requestOptions = {
-//     method: 'PATCH',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({lastWaterDate})
-//   }
-//   fetch('/adduserplant', requestOptions)
-//   .then(res => res.json())
-//   .then(data => )
-// }
-
-// const deletePlantClick = () => {
-//   const requestOptions = {
-//     method: 'PATCH',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({lastWaterDate})
-//   }
-//   fetch('/deleteuserplant', requestOptions)
-//   .then(res => res.json())
-//   .then(data => )
-// }
+  function handleAdd(event) {
+    setCards(event || []);
+  }
+  // const deletePlantClick = () => {
+  //   const requestOptions = {
+  //     method: 'PATCH',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({lastWaterDate})
+  //   }
+  //   fetch('/deleteuserplant', requestOptions)
+  //   .then(res => res.json())
+  //   .then(data => )
+  // }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -221,13 +233,10 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  let nextWater = new Date('2015-10-10');
+
   const getCardClass = (nextWater) => {
-    //   let newWater = nextWater.Date();
-    //mongoDB returns date as a string
     let currDate = new Date();
-    if (nextWater < currDate) {
-      console.log('We are here');
+    if (moment(nextWater).isBefore(moment(currDate))) {
       return classes.dangerCard;
     }
   };
@@ -260,7 +269,7 @@ export default function Dashboard() {
               noWrap
               className={classes.title}
             >
-              Dashboard
+              Wet Your Plants
             </Typography>
             <IconButton color='inherit'>
               <Badge badgeContent={4} color='secondary'>
@@ -282,7 +291,7 @@ export default function Dashboard() {
             </IconButton>
           </div>
           <List>
-            <MainListItems />
+            <MainListItems handleAdd={handleAdd} />
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -290,25 +299,33 @@ export default function Dashboard() {
           <Container className={classes.cardGrid} maxWidth='md'>
             {/* End hero unit */}
             <Grid container spacing={4}>
-              {cards.map((card) => (
-                <Grid item key={card} xs={12} sm={6} md={4}>
-                  <Card className={getCardClass(nextWater)}>
+              {cards.map((card, i) => (
+                <Grid item key={i} xs={12} sm={6} md={4}>
+                  <Card className={getCardClass(card.nextWaterDate)}>
                     <CardMedia
                       className={classes.cardMedia}
-                      image='https://source.unsplash.com/random'
+                      image={card.imageUrl}
                       title='Image title'
                     />
                     <CardContent className={classes.cardContent}>
                       <Typography gutterBottom variant='h5' component='h2'>
-                        Heading
+                        {card.nickname}
                       </Typography>
                       <Typography>
-                        This is a media card. You can use this section to
-                        describe the content.
+                        <label>Last Water Date: </label>
+                        {moment(card.lastWaterDate).format('MMM Do YY')}
+                        <br></br>
+                        <label>Next Water Date: </label>{' '}
+                        {moment(card.nextWaterDate).format('MMM Do YY')}
                       </Typography>
                     </CardContent>
                     <div className={classes.controls}>
-                      <IconButton aria-label='play/pause'>
+                      <IconButton
+                        aria-label='play/pause'
+                        onClick={() => {
+                          waterClick(card);
+                        }}
+                      >
                         <LocalDrinkIcon className={classes.playIcon} />
                       </IconButton>
                     </div>

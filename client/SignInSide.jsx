@@ -13,7 +13,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Dashboard from './components/Dashboard';
-import { BrowserRouter as useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+// import loginImage from '../assets/wetyourplants.png';
+// import image from '../assets/plant.png';
 
 function Copyright() {
   return (
@@ -31,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage:
-      'url(https://lh3.googleusercontent.com/pIWn3qkeq2eg_vq3FwF2hujYm4KydZkv8rdkjO_qT2o6uJAigUzXGyBXUY9bKFCn_N5d6G6HkEmoukQUi0C3gEUxuhzm6IdD2NEquR-y8pu7yAZdx6Co62l04wfIwOUvxfh0rQUxXNGP5GEO2_2uwLPB4wM8OUlIqTLzJ0v8WZQ4y-A5Ar8oBZzk7nWoa5Y2j-le5cIGVOpRFH3na1hUJLp3S7q4aYjkYvvQxdAJK55fdHNyTeCY4HlrRV094561ubDmQYwjdizq2HMLVpq1yQdhN-rW5ncI7MauQmyp61i2EV9FinmgHuy17-jTtUMiBw6WxWsBjjx8H1eAXLMo3wSHnQDgFm6DSuSBGZsU1rrYwxpjmEfGo9onMupm4ChoBQzaPuqng1O7PuhmVYCUKm_PybEX5NCv-Rdfro_-Z4BXxjgQToFqUbF4NuhjC3lS8rklj8riJb0I6MPmz8cmpMD8ASbwx4ByhDJ5PWHzHLtt57q_JGhESVg39bJTSsXpJ5eVZSzMa94_U_vz0JxJnyLjEdSIZr7WcD3JkOYp2Ii-qLFlr-fk94eFpxsOQJdELRq3L1F2S1w35ZoU24H5AIKZZu1Ln3NF9ByIHpRceB5cIBxlnQmkKHhM7VEpJGri0F5305fG-z0wv_z6PyhC21xFc6eSa_M9RwM36t1ko25pEXsX98lzLAnpesPJzZY0XwlonWdyAdooZucw_S5Xe-6f=w988-h1482-no?authuser=0)',
+    backgroundImage: `url(https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/What-Are-Plants.jpg)`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light'
@@ -67,10 +68,6 @@ export default function SignInSide() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   // useEffect(() => {
   //   const requestOptions = {
   //     method: 'POST',
@@ -80,16 +77,18 @@ export default function SignInSide() {
   // })
   let history = useHistory();
   const onSubmit = () => {
+    console.log(history);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: email, password }),
+      body: JSON.stringify({ username, password }),
     };
 
     fetch('/login', requestOptions)
       .then((res) => res.json())
       .then((res) => {
         if (res === true) {
+          console.log(res);
           history.push('/home');
         }
       });
@@ -155,63 +154,11 @@ export default function SignInSide() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href='#' variant='body2'>
+              <Link href='/signup' variant='body2'>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
 
-            <TextField
-              variant='outlined'
-              margin='normal'
-              required
-              fullWidth
-              id='email'
-              label='Email Address'
-              name='email'
-              autoComplete='email'
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
-            />
-            <TextField
-              variant='outlined'
-              margin='normal'
-              required
-              fullWidth
-              name='password'
-              label='Password'
-              type='password'
-              id='password'
-              autoComplete='current-password'
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value='remember' color='primary' />}
-              label='Remember me'
-            />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-              onClick={onSubmit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href='#' variant='body2'>
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='#' variant='body2'>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
             <Box mt={5}>
               <Copyright />
             </Box>

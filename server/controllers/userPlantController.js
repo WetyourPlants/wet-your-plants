@@ -33,6 +33,8 @@ const getNextWaterDate = (lastWaterDate, schedule) => {
 
 //add a new Plant
 userPlantController.addPlant = async (req, res, next) => {
+  console.log('ARE WE INSIDE PLANT CONTROLLER?');
+  console.log(req.body);
   try {
     //get the plant name from the req body
     //query the Plants collection from db for the plant
@@ -45,7 +47,7 @@ userPlantController.addPlant = async (req, res, next) => {
     console.log(user);
 
     //get the watering schedule from the plant database
-    const { schedule } = plant;
+    const { schedule, imageUrl, desc } = plant;
     //get the current Plant list from the User
     const userPlants = [...user.plantList];
 
@@ -68,6 +70,8 @@ userPlantController.addPlant = async (req, res, next) => {
       schedule,
       lastWaterDate,
       nextWaterDate,
+      imageUrl,
+      desc,
       plantInfo: plant,
     };
 
@@ -106,12 +110,13 @@ userPlantController.updatePlant = async (req, res, next) => {
     // get the name, healthInfo & lastWatered info from the request body
     const { nickname, planttype, healthInfo, lastWatered } = req.body;
 
-    const plant = await Plant.findOne({ name: req.body.planttype })
+    const plant = await Plant.findOne({ name: req.body.planttype });
 
     const userplant = userPlants.find((el) => el.nickname === nickname);
     const plantIndex = userPlants.findIndex((el) => el.nickname === nickname);
 
-    const { schedule, lastWaterDate, nextWaterDate } = userplant;
+    const { schedule, lastWaterDate, nextWaterDate, imageUrl, desc } =
+      userplant;
 
     let newLastWaterDate, newNextWaterDate;
     console.log(lastWaterDate, typeof lastWaterDate);
@@ -147,7 +152,9 @@ userPlantController.updatePlant = async (req, res, next) => {
       healthInfo,
       lastWaterDate: newLastWaterDate,
       nextWaterDate: newNextWaterDate,
-      plantInfo: plant,      
+      imageUrl,
+      desc,
+      plantInfo: plant,
     };
 
     //replace the updated plant info in the user plants list
@@ -169,7 +176,7 @@ userPlantController.updatePlant = async (req, res, next) => {
     );
 
     res.locals.user = userUpdated;
-    console.log(res.locals.user.plantList[0].plantInfo)
+    console.log(res.locals.user.plantList[0].plantInfo);
     return next();
   } catch (error) {
     return next({
@@ -191,7 +198,7 @@ userPlantController.deletePlant = async (req, res, next) => {
     //console.log()
 
     // get the name, healthInfo & lastWatered info from the request body
-    const { nickname, planttype} = req.body;
+    const { nickname, planttype } = req.body;
 
     //get the plant and index of the plant (from the user.plantList array) matching plant nickname the req body nickname
     const plant = userPlants.find((el) => el.nickname === nickname);

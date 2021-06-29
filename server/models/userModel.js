@@ -17,6 +17,8 @@ const userSchema = new Schema({
       schedule: { type: String },
       lastWaterDate: { type: Date },
       nextWaterDate: { type: Date },
+      imageUrl: { type: String },
+      desc: { type: String },
       plantInfo: {
         type: Schema.Types.ObjectId,
         ref: 'plant',
