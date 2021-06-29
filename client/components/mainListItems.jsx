@@ -14,9 +14,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '@material-ui/core';
+import Popper from '@material-ui/core/Popper';
 // import { useHistory } from 'react-router-dom';
-
+/*
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    border: '1px solid',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+*/
 export const MainListItems = (props) => {
+  // const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [add, setAdd] = useState([]);
   const [planttype, setType] = useState('');
@@ -24,6 +34,15 @@ export const MainListItems = (props) => {
   const [lastWatered, setLastWatered] = useState('');
   const refHook = useRef(false);
   const [renderStatus, setRenderStatus] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const popHandleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  // const open = Boolean(anchorEl);
+  // const id = open ? 'simple-popper' : undefined;
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -86,7 +105,12 @@ export const MainListItems = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary'>
+          <Button
+            onClick={() => {
+              setOpen(false);
+            }}
+            color='primary'
+          >
             Cancel
           </Button>
           <Button
@@ -123,7 +147,7 @@ export const MainListItems = (props) => {
         </ListItemIcon>
         <ListItemText primary='Delete A Plant' />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={popHandleClick}>
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>

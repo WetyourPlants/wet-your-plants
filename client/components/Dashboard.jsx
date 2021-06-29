@@ -192,7 +192,11 @@ export default function Dashboard() {
     };
     fetch('/updateuserplant', requestOptions)
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log('updated user plant after water???');
+        console.log(data);
+        setCards(data.plantList || []);
+      });
   };
   const addPlant = (event) => {
     const requestOptions = {
@@ -265,7 +269,7 @@ export default function Dashboard() {
               noWrap
               className={classes.title}
             >
-              Dashboard
+              Wet Your Plants
             </Typography>
             <IconButton color='inherit'>
               <Badge badgeContent={4} color='secondary'>
@@ -287,7 +291,7 @@ export default function Dashboard() {
             </IconButton>
           </div>
           <List>
-            <MainListItems handleAdd={handleAdd} setCards={setCards} />
+            <MainListItems handleAdd={handleAdd} />
           </List>
         </Drawer>
         <main className={classes.content}>
