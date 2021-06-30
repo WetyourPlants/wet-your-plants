@@ -115,7 +115,7 @@ app.patch(
 );
 
 // delete Plant from the User Plant collection in the database
-app.delete(
+app.put(
   '/deleteuserplant',
   sessionController.isLoggedIn,
   userPlantController.deletePlant,
@@ -128,7 +128,7 @@ app.get(
   '/getplanttypes',
   plantController.getPlants,
   (req, res) => {
-    console.log(res.locals.plantTypes)
+    // console.log(res.locals.plantTypes)
     res.status(200).json(res.locals.plantTypes);
   }
 )
