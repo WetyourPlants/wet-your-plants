@@ -60,7 +60,7 @@ userController.getUserPlants = (req, res, next) => {
     .then((user) => {
       // find the user and set the resl.locals.user to the user
       console.log(user);
-      console.log(user.plantList);
+      // console.log(user.plantList);
       res.locals.userPlants = user.plantList;
       return next();
     })

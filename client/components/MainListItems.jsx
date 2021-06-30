@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -43,6 +43,8 @@ const MainListItems = (props) => {
   const refHook = useRef(false);
   const [renderStatus, setRenderStatus] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [plantsList, setPlantsList] = useState([])
+  const [myPlants, setMyPlants] = useState([])
 
   const popHandleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -62,10 +64,6 @@ const MainListItems = (props) => {
 
   const handleClose = () => {};
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
   const addPlantClick = (info) => {
     const requestOptions = {
       method: 'POST',
@@ -79,25 +77,66 @@ const MainListItems = (props) => {
         setOpen(false);
       });
   };
- 
-  const mappedPlants = [];
+
+  const deletePlantClick = (info) => {
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: nickname,
+    };
+    fetch('/deleteuserplant', requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('still here')
+        props.handleAdd(data.plantList);
+        setOpenDelete(false);
+      })
+      .catch(err => console.log('error in deleteplantclick', err));
+  }
+
 
  const mapPlantsToDrop = () => {
    fetch('/getplanttypes')
    .then((res) => res.json())
    .then((data) => {
-     data.map((el) => mappedPlants.push(<MenuItem value={el}>{el}</MenuItem>) )
-   } 
-  
-   )
-   .then(() => {
-     console.log(mappedPlants)
+     console.log(data)
+     const mappedPlants = [];
+     data.forEach((el) => mappedPlants.push(<MenuItem value={el}>{el}</MenuItem>))
+     setPlantsList(mappedPlants)
    })
- } 
+ }
+
+const getMyPlants= () => {
+  fetch('/home/getPlants')
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    const tempPlantsObjToArray = [];
+    data.plantList.forEach((el) => {
+      tempPlantsObjToArray.push(el['nickname'])
+    })
+    return tempPlantsObjToArray
+  })
+  .then(data => {
+    console.log(data)
+    const tempMyPlants = [];
+    data.forEach((el) => tempMyPlants.push(<MenuItem value={el}>{el}</MenuItem>))
+    setMyPlants(tempMyPlants)
+  })
+}
+
+  useEffect(() => {
+    if(plantsList.length === 0) {
+      mapPlantsToDrop()
+      console.log('fetching plants type')
+    }
+    if(myPlants.length === 0) {
+      getMyPlants()
+    }
+  })
 
   return (
     <div id='sidebar'>
-
       {/* this is the dialog for the add button */}
       <Dialog
         open={open}
@@ -119,18 +158,15 @@ const MainListItems = (props) => {
             fullWidth
             onChange={(e) => setNickname(e.currentTarget.value)}
           />
-          <InputLabel id="demo-simple-select-label">Plant Tizzype</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={'plantType'}
-            onChange={handleChange}
-          >
-        {mappedPlants}
-          
-          
+        <InputLabel id="demo-simple-select-label">Plant Type</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={planttype}
+          onChange={(e) => setType(e.target.value)}
+        >
+          {plantsList}
         </Select>
-          
           <TextField
             autoFocus
             margin='dense'
@@ -168,38 +204,29 @@ const MainListItems = (props) => {
         aria-labelledby='form-dialog-title'
         id='deletePlant'
       >
-        <DialogTitle id='form-dialog-title'>Delete Your Plant</DialogTitle>
+        <DialogTitle id='form-dialog-title'>Pull A Plant</DialogTitle>
         <DialogContent>
           <DialogContentText>
             As the garden shrinks, so does the gardener!
           </DialogContentText>
-          <TextField
+          {/* <TextField
             autoFocus
             margin='dense'
             id='nickname'
-            label='Enter New Plant Nickname'
+            label='Pick a plant to end'
             type='nickname'
             fullWidth
             onChange={(e) => setNickname(e.currentTarget.value)}
-          />
-          <TextField
-            autoFocus
-            margin='dense'
-            id='plantType'
-            label='Enter New Plant Type'
-            type='plantType'
-            fullWidth
-            onChange={(e) => setType(e.currentTarget.value)}
-          />
-          <TextField
-            autoFocus
-            margin='dense'
-            id='lastWatered'
-            label='Enter Last Watered Date (MM-DD-YYYY)'
-            type='lastWatered'
-            fullWidth
-            onChange={(e) => setLastWatered(e.currentTarget.value)}
-          />
+          /> */}
+        <InputLabel id="demo-simple-select-label">My Plants</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+        >
+          {myPlants}
+        </Select>
         </DialogContent>
         <DialogActions>
           <Button
@@ -212,11 +239,11 @@ const MainListItems = (props) => {
           </Button>
           <Button
             onClick={(e) => {
-              addPlantClick(e);
+              deletePlantClick(e);
             }}
             color='primary'
           >
-            Add
+            RIP
           </Button>
         </DialogActions>
       </Dialog>
@@ -235,10 +262,7 @@ const MainListItems = (props) => {
         <ListItemText primary='Plants' />
       </ListItem>
 
-      <ListItem button onClick={() => {
-        handleClickOpen();
-        mapPlantsToDrop();
-        }}>
+      <ListItem button onClick={handleClickOpen}>
         <ListItemIcon>
           <AddCircleIcon />
         </ListItemIcon>

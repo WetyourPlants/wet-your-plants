@@ -11,7 +11,7 @@ const userSchema = new Schema({
   phone: { type: String },
   plantList: [
     {
-      nickname: { type: String },
+      nickname: { type: String, unique: true },
       planttype: { type: String },
       healthInfo: { type: String },
       schedule: { type: String },
