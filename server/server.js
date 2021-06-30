@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -8,21 +9,23 @@ const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
 const cookieController = require('./controllers/cookieController');
 const userPlantController = require('./controllers/userPlantController');
-const plantController = require('./controllers/plantController');
-const bodyParser = require('body-parser');
+// const plantController = require('./controllers/plantController');
+// const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 //define and connect to database
 //currently set to local database: need to be replaced with Cloud (mongo Atlas) server??
 const mongoURI =
-  'mongodb+srv://wet-your-plants:plants2021@cluster0.iounu.mongodb.net/wetYourPlants?retryWrites=true&w=majority';
+  'mongodb+srv://jimmycngo:jjE2qsDLpmnfmyB@cluster0.fwtic.mongodb.net/dangernoodle?retryWrites=true&w=majority';
 mongoose
-  .connect(mongoURI, {
+  .connect(mongoURI
+    , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    dbName: 'wetYourPlants',
-  })
+    dbName: 'dangernoodle',
+  }
+  )
   .then(() => console.log('Connected to Mongo DB.'))
   .catch((err) => console.log(err));
 
@@ -86,6 +89,7 @@ app.post(
   cookieController.setSSIDCookie,
   sessionController.startSession,
   (req, res) => {
+    console.log('im in app.post signup')
     res.redirect('/home');
   }
 );

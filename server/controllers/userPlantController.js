@@ -191,7 +191,7 @@ userPlantController.updatePlant = async (req, res, next) => {
 userPlantController.deletePlant = async (req, res, next) => {
   try {
     //update database with the plant watering update / plant healthInfo update
-
+    console.log('im in userPlantController.deletePlant')
     const user = await User.findOne({ _id: req.cookies.ssid });
 
     const userPlants = [...user.plantList];

@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export const MainListItems = (props) => {
   // const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [add, setAdd] = useState([]);
   const [planttype, setType] = useState('');
   const [nickname, setNickname] = useState('');
@@ -47,6 +48,10 @@ export const MainListItems = (props) => {
     setOpen(true);
   };
   // const [cards, setCards] = useState([]);
+  
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
 
   const handleClose = () => {};
 
@@ -66,6 +71,8 @@ export const MainListItems = (props) => {
 
   return (
     <div>
+
+      {/* this is the dialog for the add button */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -123,30 +130,94 @@ export const MainListItems = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* this is the dialog for the delete button */}
+      <Dialog
+        open={openDelete}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'
+      >
+        <DialogTitle id='form-dialog-title'>Delete Your Plant</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            As the garden shrinks, so does the gardener!
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='nickname'
+            label='Enter New Plant Nickname'
+            type='nickname'
+            fullWidth
+            onChange={(e) => setNickname(e.currentTarget.value)}
+          />
+          <TextField
+            autoFocus
+            margin='dense'
+            id='plantType'
+            label='Enter New Plant Type'
+            type='plantType'
+            fullWidth
+            onChange={(e) => setType(e.currentTarget.value)}
+          />
+          <TextField
+            autoFocus
+            margin='dense'
+            id='lastWatered'
+            label='Enter Last Watered Date (MM-DD-YYYY)'
+            type='lastWatered'
+            fullWidth
+            onChange={(e) => setLastWatered(e.currentTarget.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenDelete(false);
+            }}
+            color='primary'
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={(e) => {
+              addPlantClick(e);
+            }}
+            color='primary'
+          >
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary='Dashboard' />
       </ListItem>
+
       <ListItem button>
         <ListItemIcon>
           <EcoIcon />
         </ListItemIcon>
         <ListItemText primary='Plants' />
       </ListItem>
+
       <ListItem button onClick={handleClickOpen}>
         <ListItemIcon>
           <AddCircleIcon />
         </ListItemIcon>
         <ListItemText primary='Add A New Plant' />
       </ListItem>
-      <ListItem button>
+
+      <ListItem button onClick={handleClickOpenDelete}>
         <ListItemIcon>
           <DeleteIcon />
         </ListItemIcon>
         <ListItemText primary='Delete A Plant' />
       </ListItem>
+
       <ListItem button onClick={popHandleClick}>
         <ListItemIcon>
           <BarChartIcon />
