@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -15,6 +16,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '@material-ui/core';
 import Popper from '@material-ui/core/Popper';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 // import { useHistory } from 'react-router-dom';
 /*
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 export const MainListItems = (props) => {
   // const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [add, setAdd] = useState([]);
   const [planttype, setType] = useState('');
   const [nickname, setNickname] = useState('');
@@ -47,8 +55,16 @@ export const MainListItems = (props) => {
     setOpen(true);
   };
   // const [cards, setCards] = useState([]);
+  
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
 
   const handleClose = () => {};
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
   const addPlantClick = (info) => {
     const requestOptions = {
@@ -63,9 +79,26 @@ export const MainListItems = (props) => {
         setOpen(false);
       });
   };
+ 
+  const mappedPlants = [];
+
+ const mapPlantsToDrop = () => {
+   fetch('/getplanttypes')
+   .then((res) => res.json())
+   .then((data) => {
+     data.map((el) => mappedPlants.push(<MenuItem value={el}>{el}</MenuItem>) )
+   } 
+  
+   )
+   .then(() => {
+     console.log(mappedPlants)
+   })
+ } 
 
   return (
     <div>
+
+      {/* this is the dialog for the add button */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -75,6 +108,68 @@ export const MainListItems = (props) => {
         <DialogContent>
           <DialogContentText>
             As the garden grows, so does the gardener!
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='nickname'
+            label='Enter New Plant Nickname'
+            type='nickname'
+            fullWidth
+            onChange={(e) => setNickname(e.currentTarget.value)}
+          />
+          <InputLabel id="demo-simple-select-label">Plant Tizzype</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={'plantType'}
+            onChange={handleChange}
+          >
+        {mappedPlants}
+          
+          
+        </Select>
+          
+          <TextField
+            autoFocus
+            margin='dense'
+            id='lastWatered'
+            label='Enter Last Watered Date (MM-DD-YYYY)'
+            type='lastWatered'
+            fullWidth
+            onChange={(e) => setLastWatered(e.currentTarget.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpen(false);
+            }}
+            color='primary'
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={(e) => {
+              addPlantClick(e);
+            }}
+            color='primary'
+          >
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* this is the dialog for the delete button */}
+      <Dialog
+        open={openDelete}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'
+      >
+        <DialogTitle id='form-dialog-title'>Delete Your Plant</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            As the garden shrinks, so does the gardener!
           </DialogContentText>
           <TextField
             autoFocus
@@ -107,7 +202,7 @@ export const MainListItems = (props) => {
         <DialogActions>
           <Button
             onClick={() => {
-              setOpen(false);
+              setOpenDelete(false);
             }}
             color='primary'
           >
@@ -123,30 +218,38 @@ export const MainListItems = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary='Dashboard' />
       </ListItem>
+
       <ListItem button>
         <ListItemIcon>
           <EcoIcon />
         </ListItemIcon>
         <ListItemText primary='Plants' />
       </ListItem>
-      <ListItem button onClick={handleClickOpen}>
+
+      <ListItem button onClick={() => {
+        handleClickOpen();
+        mapPlantsToDrop();
+        }}>
         <ListItemIcon>
           <AddCircleIcon />
         </ListItemIcon>
         <ListItemText primary='Add A New Plant' />
       </ListItem>
-      <ListItem button>
+
+      <ListItem button onClick={handleClickOpenDelete}>
         <ListItemIcon>
           <DeleteIcon />
         </ListItemIcon>
         <ListItemText primary='Delete A Plant' />
       </ListItem>
+
       <ListItem button onClick={popHandleClick}>
         <ListItemIcon>
           <BarChartIcon />

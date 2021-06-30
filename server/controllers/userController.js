@@ -8,7 +8,6 @@ const userController = {};
 userController.createUser = (req, res, next) => {
   // NOTE: add .pre to user model to hash and use bcrypt on the password before it's sent to the database
   console.log('Inside createUser');
-
   User.create(
     {
       username: req.body.username,
