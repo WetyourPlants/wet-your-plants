@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Dashboard from './Dashboard';
 // import UserService from '@services/user';
 
 // import { UserContext } from '@contexts/user';
@@ -89,47 +90,34 @@ export default function SignUp() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username,
-        email,
+        emailadd,
         password,
-        phonenumber,
-        confirmpassword,
+        phonenum,
+        confirmpw,
       }),
     };
-    fetch('/login', requestOptions)
-      .then((res) => res.json())
-      .then((data) => setSignedUp(true));
+    fetch('/signup', requestOptions)
+      .then((data) => {
+        console.log(data)
+        //sets your verification status to true to let the site know it is a valid signup
+        return setSignedUp(true)
+      })
   };
 
+  //if signup is true this will redirect you to the dashboard component
   if (signedUp) {
-    return <SignInSide />;
+    return <Dashboard />;
   }
   return (
     <div>
       <label htmlFor={'Username'}> </label>
-      {/* <input
-        id= {"Username"}
-        onChange = {(event)=> {
-          setUsername(event.target.value);
-        }}
-        /> */}
 
       <div>
         <label htmlFor={'EmailAddress'}> </label>
-        {/* <input
-        id= {"EmailAddress"}
-        onChange = {(event)=> {
-          setEmailadd(event.target.value);
-        }}
-        /> */}
 
         <div>
           <label htmlFor={'PhoneNumber'}> </label>
-          {/* <input
-        id= {"PhoneNumber"}
-        onChange = {(event)=> {
-          setPhonenum(event.target.value);
-        }}
-        /> */}
+
           <div>
             <label htmlFor={'Password'}> </label>
 
