@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -15,6 +16,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Button } from '@material-ui/core';
 import Popper from '@material-ui/core/Popper';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 // import { useHistory } from 'react-router-dom';
 /*
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +62,10 @@ export const MainListItems = (props) => {
 
   const handleClose = () => {};
 
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
   const addPlantClick = (info) => {
     const requestOptions = {
       method: 'POST',
@@ -68,6 +79,21 @@ export const MainListItems = (props) => {
         setOpen(false);
       });
   };
+ 
+  const mappedPlants = [];
+
+ const mapPlantsToDrop = () => {
+   fetch('/getplanttypes')
+   .then((res) => res.json())
+   .then((data) => {
+     data.map((el) => mappedPlants.push(<MenuItem value={el}>{el}</MenuItem>) )
+   } 
+  
+   )
+   .then(() => {
+     console.log(mappedPlants)
+   })
+ } 
 
   return (
     <div>
@@ -92,15 +118,18 @@ export const MainListItems = (props) => {
             fullWidth
             onChange={(e) => setNickname(e.currentTarget.value)}
           />
-          <TextField
-            autoFocus
-            margin='dense'
-            id='plantType'
-            label='Enter New Plant Type'
-            type='plantType'
-            fullWidth
-            onChange={(e) => setType(e.currentTarget.value)}
-          />
+          <InputLabel id="demo-simple-select-label">Plant Tizzype</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={'plantType'}
+            onChange={handleChange}
+          >
+        {mappedPlants}
+          
+          
+        </Select>
+          
           <TextField
             autoFocus
             margin='dense'
@@ -204,7 +233,10 @@ export const MainListItems = (props) => {
         <ListItemText primary='Plants' />
       </ListItem>
 
-      <ListItem button onClick={handleClickOpen}>
+      <ListItem button onClick={() => {
+        handleClickOpen();
+        mapPlantsToDrop();
+        }}>
         <ListItemIcon>
           <AddCircleIcon />
         </ListItemIcon>
