@@ -24,7 +24,7 @@ plantController.addPlant = (req, res, next) => {
 plantController.getPlants = (req, res, next) => {
   console.log('inside plant controller');
   Plant.find({}, 'name')
-    .exec()
+    // .exec()
     .then((plantNames) => {
       // console.log(plantNames.map((el) => el.name));
       res.locals.plantTypes = plantNames.map((el) => el.name);

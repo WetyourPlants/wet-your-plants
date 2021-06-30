@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 */
-export const MainListItems = (props) => {
+const MainListItems = (props) => {
   // const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -96,13 +96,14 @@ export const MainListItems = (props) => {
  } 
 
   return (
-    <div>
+    <div id='sidebar'>
 
       {/* this is the dialog for the add button */}
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby='form-dialog-title'
+        id='addPlant'
       >
         <DialogTitle id='form-dialog-title'>Add A New Plant</DialogTitle>
         <DialogContent>
@@ -165,6 +166,7 @@ export const MainListItems = (props) => {
         open={openDelete}
         onClose={handleClose}
         aria-labelledby='form-dialog-title'
+        id='deletePlant'
       >
         <DialogTitle id='form-dialog-title'>Delete Your Plant</DialogTitle>
         <DialogContent>
@@ -243,7 +245,7 @@ export const MainListItems = (props) => {
         <ListItemText primary='Add A New Plant' />
       </ListItem>
 
-      <ListItem button onClick={handleClickOpenDelete}>
+      <ListItem button id='opendeletebutton' onClick={handleClickOpenDelete}>
         <ListItemIcon>
           <DeleteIcon />
         </ListItemIcon>
@@ -259,3 +261,5 @@ export const MainListItems = (props) => {
     </div>
   );
 };
+
+export default MainListItems;

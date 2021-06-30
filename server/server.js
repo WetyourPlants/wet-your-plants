@@ -9,7 +9,7 @@ const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
 const cookieController = require('./controllers/cookieController');
 const userPlantController = require('./controllers/userPlantController');
-// const plantController = require('./controllers/plantController');
+const plantController = require('./controllers/plantController');
 // const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
@@ -123,6 +123,15 @@ app.delete(
     res.status(200).json(res.locals.user);
   }
 );
+
+app.get(
+  '/getplanttypes',
+  plantController.getPlants,
+  (req, res) => {
+    console.log(res.locals.plantTypes)
+    res.status(200).json(res.locals.plantTypes);
+  }
+)
 
 // global error handler
 app.use((err, req, res, next) => {
