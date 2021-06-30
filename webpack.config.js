@@ -37,6 +37,7 @@ module.exports = {
         // the loader which should be applied, it'll be resolved relative to the context
         options: {
           presets: ['@babel/preset-env', '@babel/preset-react'],
+          plugins: ['@babel/plugin-transform-react-jsx'],
         },
         type: 'javascript/auto',
         // specifies the module type
