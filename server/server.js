@@ -122,6 +122,7 @@ app.patch(
   (req, res) => {
     console.log('wooooooOOOOOOOoooooo00000000000000000000oooOOOOOOooo!!!!!')
     res.status(200).json(res.locals.user);
+
   }
 );
 
