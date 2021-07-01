@@ -41,7 +41,7 @@ app.use('/assets', express.static(path.resolve(__dirname, '../assets')));
 app.get('/home/getPlants', userController.getUserPlants, (req, res) => {
   //need to render the landing page with the following json passed as to the get request
   console.log('inside /home/getPlants');
-  console.log(res.locals.userPlants);
+  // console.log(res.locals.userPlants);
   return res.status(200).json({
     plantList: res.locals.userPlants,
     // dbplantTypes: res.locals.plantTypes,
@@ -125,6 +125,7 @@ app.patch(
   }
 );
 
+//get plant types to be used in add dropdown
 app.get(
   '/getplanttypes',
   plantController.getPlants,

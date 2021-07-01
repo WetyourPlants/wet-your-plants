@@ -206,44 +206,5 @@ userPlantController.deletePlant = async (req, res, next) => {
     });
   }
 }
-// userPlantController.deletePlant = async (req, res, next) => {
-//   try {
-//     //update database with the plant watering update / plant healthInfo update
-//     console.log('im in userPlantController.deletePlant')
-//     console.log(req.body)
-//     const user = await User.findOne({ _id: req.cookies.ssid });
-
-//     const userPlants = [...user.plantList];
-//     //console.log()
-
-//     // get the name, healthInfo & lastWatered info from the request body
-//     const { nickname } = req.body;
-
-//     //get the plant and index of the plant (from the user.plantList array) matching plant nickname the req body nickname
-//     const plant = userPlants.find((el) => el.nickname === nickname);
-//     const plantIndex = userPlants.findIndex((el) => el.nickname === nickname);
-
-//     //delete the plant at the index
-
-//     userPlants.splice(plantIndex, 1);
-
-//     //update the user collection with the updated Plant info
-//     const userUpdated = await User.findOneAndUpdate(
-//       { _id: req.cookies.ssid },
-//       { plantList: userPlants },
-//       { new: true }
-//     );
-
-//     res.locals.user = userUpdated;
-//     return next();
-//   } catch (error) {
-//     return next({
-//       log: `Error in userPlantController.deletePlant, Error Message: ${error}`,
-//       message: `Error in the userPlantController.deletePlant, check log for details `,
-//     });
-//   }
-
-//   //const
-// };
 
 module.exports = userPlantController;
