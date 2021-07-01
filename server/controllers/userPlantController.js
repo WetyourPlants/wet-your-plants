@@ -194,7 +194,7 @@ userPlantController.deletePlant = async (req, res, next) => {
     console.log(req.body)
     const user = await User.findOne({ _id: req.cookies.ssid });
     const updatedPlantList = user.plantList.filter(el => el.nickname !== req.body.nickname);
-    console.log(updatedPlantList)
+    // console.log(updatedPlantList)
     await User.findOneAndUpdate({ _id: req.cookies.ssid }, {$pull: {plantList: {nickname: req.body.nickname}}})
     //User.findOneAndUpdate({ _id: req.cookies.ssid }, {$set: {plantList: updatedPlantList}})
     console.log(req.body.nickname)
