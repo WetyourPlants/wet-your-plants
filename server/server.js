@@ -110,7 +110,7 @@ app.patch(
   sessionController.isLoggedIn,
   userPlantController.updatePlant,
   (req, res) => {
-    res.status(200).json(res.locals.user);
+    res.status(200).json('deleted');
   }
 );
 
@@ -121,7 +121,7 @@ app.patch(
   userPlantController.deletePlant,
   (req, res) => {
     console.log('wooooooOOOOOOOoooooo00000000000000000000oooOOOOOOooo!!!!!')
-    res.status(200).json("hello?");
+    res.status(200).json(res.locals.user);
   }
 );
 

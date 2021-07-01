@@ -5,15 +5,16 @@ import Adapter from 'enzyme-adapter-react-16';
 //import file you want to test
 import MainListItems from '../client/components/MainListItems.jsx'
 
-Enzyme.configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
 
 describe('SideBar Dialogues', () => {
   describe('Delete Dialogue', () => {
 
     let wrapper;
+    let state;
     const setState = jest.fn();
     const useStateSpy = jest.spyOn(React, 'useState')
-    useStateSpy.mockImplementation((init) => [init, setState]);
+    useStateSpy.mockImplementation((state) => [state, setState]);
 
     beforeAll(() => {
       wrapper = shallow(<MainListItems />);
@@ -23,11 +24,12 @@ describe('SideBar Dialogues', () => {
       jest.clearAllMocks();
     });
 
-    it('OpenDelete state is changed to true when clicking "Delete A Plant"', () => {
+    it('Clicking the delete button calls a function that results in a useState', () => {
       // console.log(wrapper.debug());
-      const click = wrapper.find('#opendeletebutton').props().onClick();
-      click.simulate('click')
-      expect(setState).toHaveBeenCalled();
+      const deletebutton = wrapper.find('#opendeletebutton');
+      deletebutton.simulate('click')
+      console.log(state)
+      expect(useStateSpy).toHaveBeenCalled();
     });
   });
 });
