@@ -22,6 +22,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 // import { useHistory } from 'react-router-dom';
 /*
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +47,7 @@ const MainListItems = (props) => {
   const [add, setAdd] = useState([]);
   const [planttype, setType] = useState('');
   const [nickname, setNickname] = useState('');
-  const [lastWatered, setLastWatered] = useState('');
+  const [lastWatered, setLastWatered] = React.useState(new Date());
   const refHook = useRef(false);
   const [renderStatus, setRenderStatus] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -80,15 +88,17 @@ const MainListItems = (props) => {
 
   const deletePlantClick = (info) => {
     const requestOptions = {
-      method: 'PUT',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: nickname,
+      body: JSON.stringify({ nickname }),
     };
     fetch('/deleteuserplant', requestOptions)
-      .then((res) => res.json())
+      // .then(data => console.log(data))
+      .then(res => res.json())
       .then((data) => {
         console.log('still here')
-        props.handleAdd(data.plantList);
+        console.log(data)
+        // props.handleAdd(data.plantList);
         setOpenDelete(false);
       })
       .catch(err => console.log('error in deleteplantclick', err));
@@ -149,6 +159,7 @@ const getMyPlants= () => {
           <DialogContentText>
             As the garden grows, so does the gardener!
           </DialogContentText>
+          {/* Insert Plant nickname field */}
           <TextField
             autoFocus
             margin='dense'
@@ -158,16 +169,34 @@ const getMyPlants= () => {
             fullWidth
             onChange={(e) => setNickname(e.currentTarget.value)}
           />
-        <InputLabel id="demo-simple-select-label">Plant Type</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={planttype}
-          onChange={(e) => setType(e.target.value)}
-        >
-          {plantsList}
-        </Select>
-          <TextField
+          {/* Plant type dropdown */}
+          {/* <InputLabel id="simple-select-label">Plant Type</InputLabel>
+          <Select
+            labelId="simple-select-label"
+            id="simple-select"
+            value={planttype}
+            onChange={(e) => setType(e.target.value)}
+          >
+            {plantsList}
+          </Select> */}
+          &nbsp;
+
+          <Select
+            margin='dense'
+            fullWidth
+            value={planttype}
+            onChange={(e) => setType(e.target.value)}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+          >
+            <MenuItem value="" disabled>
+              Select Plant Type
+            </MenuItem>
+            {plantsList}
+          </Select>
+
+          {/* Insert date when last watered field */}
+          {/* <TextField
             autoFocus
             margin='dense'
             id='lastWatered'
@@ -175,7 +204,27 @@ const getMyPlants= () => {
             type='lastWatered'
             fullWidth
             onChange={(e) => setLastWatered(e.currentTarget.value)}
-          />
+          /> */}
+          {/* Insert date when last watered field */}
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container justify="space-around">
+              <KeyboardDatePicker
+                fullWidth
+                autoOk={true}
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Pick Last Watered Date"
+                value={lastWatered}
+                onChange={setLastWatered}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+          </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
           <Button
@@ -209,24 +258,30 @@ const getMyPlants= () => {
           <DialogContentText>
             As the garden shrinks, so does the gardener!
           </DialogContentText>
-          {/* <TextField
-            autoFocus
-            margin='dense'
-            id='nickname'
-            label='Pick a plant to end'
-            type='nickname'
+          {/* Plant nickname dropdown */}
+          {/* <InputLabel id="simple-select-label">My Plants</InputLabel> */}
+          {/* <Select
             fullWidth
-            onChange={(e) => setNickname(e.currentTarget.value)}
-          /> */}
-        <InputLabel id="demo-simple-select-label">My Plants</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        >
-          {myPlants}
-        </Select>
+            labelId="simple-select-label"
+            id="simple-select"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          >
+            {myPlants}
+          </Select> */}
+          <Select
+            margin='dense'
+            fullWidth
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+          >
+            <MenuItem value="" disabled>
+              Select a plant to pull
+            </MenuItem>
+            {myPlants}
+          </Select>
         </DialogContent>
         <DialogActions>
           <Button

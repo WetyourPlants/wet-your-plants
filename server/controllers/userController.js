@@ -23,7 +23,6 @@ userController.createUser = (req, res, next) => {
           message: `Error in the userController.createUser, check log for details `,
         });
       }
-
       res.locals.user = result;
       return next();
     }

@@ -25,7 +25,8 @@ describe('SideBar Dialogues', () => {
 
     it('OpenDelete state is changed to true when clicking "Delete A Plant"', () => {
       // console.log(wrapper.debug());
-      wrapper.find('#opendeletebutton').props().onClick();
+      const click = wrapper.find('#opendeletebutton').props().onClick();
+      click.simulate('click')
       expect(setState).toHaveBeenCalled();
     });
   });
