@@ -38,4 +38,23 @@ plantController.getPlants = (req, res, next) => {
     });
 };
 
+plantController.addCustomPlant = (req, res, next) => {
+  console.log('inside custom plant controller');
+  Plant.create(
+    {
+      name: req.body.species,
+      imageUrl: req.body.image,
+      desc: req.body.desc,
+      schedule: req.body.sched,
+    },
+    (err, result) => {
+      if (err) {
+        return next(err);
+      }
+      res.locals.plant = result;
+      return next();
+    }
+  );
+};
+
 module.exports = plantController;

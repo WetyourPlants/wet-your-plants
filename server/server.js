@@ -136,6 +136,14 @@ app.get(
   }
 )
 
+app.post(
+  '/addcustomplant',
+  plantController.addCustomPlant,
+  (req, res) => {
+    res.status(200).json(res.locals.plant);
+  }
+);
+
 // global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {

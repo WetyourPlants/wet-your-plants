@@ -53,6 +53,11 @@ const MainListItems = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [plantsList, setPlantsList] = useState([])
   const [myPlants, setMyPlants] = useState([])
+  const [openCustom, setOpenCustom] = useState(false);
+  const [species, setSpecies] = useState('');
+  const [image, setImage] = useState('');
+  const [desc, setDesc] = useState('');
+  const [sched, setSched] = useState("1-2 weeks");
 
   const popHandleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -68,6 +73,10 @@ const MainListItems = (props) => {
   
   const handleClickOpenDelete = () => {
     setOpenDelete(true);
+  };
+
+  const handleClickOpenCustom = () => {
+    setOpenCustom(true);
   };
 
   const handleClose = () => {};
@@ -105,7 +114,25 @@ const MainListItems = (props) => {
       })
       .catch(err => console.log('error in deleteplantclick', err));
   }
-
+  
+  const customPlantClick = (info) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ species, image, desc, sched }),
+    };
+    fetch('/addcustomplant', requestOptions)
+      // .then(data => console.log(data))
+      .then(res => res.json())
+      .then((data) => {
+        console.log('still here')
+        console.log(data)
+        // props.handleAdd(data.plantList);
+        mapPlantsToDrop()
+        setOpenCustom(false);
+      })
+      .catch(err => console.log('error in deleteplantclick', err));
+  }
 
  const mapPlantsToDrop = () => {
    fetch('/getplanttypes')
@@ -172,17 +199,7 @@ const getMyPlants= () => {
             onChange={(e) => setNickname(e.currentTarget.value)}
           />
           {/* Plant type dropdown */}
-          {/* <InputLabel id="simple-select-label">Plant Type</InputLabel>
-          <Select
-            labelId="simple-select-label"
-            id="simple-select"
-            value={planttype}
-            onChange={(e) => setType(e.target.value)}
-          >
-            {plantsList}
-          </Select> */}
           &nbsp;
-
           <Select
             margin='dense'
             fullWidth
@@ -197,16 +214,6 @@ const getMyPlants= () => {
             {plantsList}
           </Select>
 
-          {/* Insert date when last watered field */}
-          {/* <TextField
-            autoFocus
-            margin='dense'
-            id='lastWatered'
-            label='Enter Last Watered Date (MM-DD-YYYY)'
-            type='lastWatered'
-            fullWidth
-            onChange={(e) => setLastWatered(e.currentTarget.value)}
-          /> */}
           {/* Insert date when last watered field */}
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container justify="space-around">
@@ -261,16 +268,6 @@ const getMyPlants= () => {
             As the garden shrinks, so does the gardener!
           </DialogContentText>
           {/* Plant nickname dropdown */}
-          {/* <InputLabel id="simple-select-label">My Plants</InputLabel> */}
-          {/* <Select
-            fullWidth
-            labelId="simple-select-label"
-            id="simple-select"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          >
-            {myPlants}
-          </Select> */}
           <Select
             margin='dense'
             fullWidth
@@ -301,6 +298,86 @@ const getMyPlants= () => {
             color='primary'
           >
             RIP
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* this is the dialog for the custom plant type button */}
+      <Dialog
+        open={openCustom}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'
+        id='addPlant'
+      >
+        <DialogTitle id='form-dialog-title'>Add New Custom Plant</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            As the garden variety grows, so does the gardener!
+          </DialogContentText>
+          {/* Insert Plant name field */}
+          <TextField
+            autoFocus
+            margin='dense'
+            id='nickname'
+            label='Enter New Plant Species'
+            type='species'
+            fullWidth
+            onChange={(e) => setSpecies(e.currentTarget.value)}
+          />
+          {/* Plant image upload */}
+          <TextField
+            margin='dense'
+            id='image'
+            label='Enter Image URL'
+
+            fullWidth
+            onChange={(e) => setImage(e.currentTarget.value)}
+          />
+          
+          {/* Insert description */}
+          <TextField
+            margin='dense'
+            id='desc'
+            label='Enter a Description'
+            type='desc'
+            fullWidth
+            onChange={(e) => setDesc(e.currentTarget.value)}
+          />
+          {/* Insert watering schedule */}
+          &nbsp;
+          <Select
+            margin='dense'
+            fullWidth
+            value={sched}
+            onChange={(e) => setSched(e.target.value)}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+          >
+            <MenuItem value="" disabled>
+              Choose a Watering Schedule
+            </MenuItem>
+            <MenuItem value={"1-2 weeks"}>1-2 weeks</MenuItem>
+            <MenuItem value={"2-3 weeks"}>2-3 weeks</MenuItem>
+            <MenuItem value={"3-4 weeks"}>3-4 weeks</MenuItem>
+
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenCustom(false);
+            }}
+            color='primary'
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={(e) => {
+              customPlantClick(e);
+            }}
+            color='primary'
+          >
+            Add
           </Button>
         </DialogActions>
       </Dialog>
@@ -339,6 +416,14 @@ const getMyPlants= () => {
         </ListItemIcon>
         <ListItemText primary='Reports' />
       </ListItem>
+
+      <ListItem button onClick={handleClickOpenCustom}>
+        <ListItemIcon>
+          <AddCircleIcon />
+        </ListItemIcon>
+        <ListItemText primary='Diversify Garden' />
+      </ListItem>
+
     </div>
   );
 };
