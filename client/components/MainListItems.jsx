@@ -82,6 +82,7 @@ const MainListItems = (props) => {
       .then((res) => res.json())
       .then((data) => {
         props.handleAdd(data.plantList);
+        getMyPlants()
         setOpen(false);
       });
   };
@@ -98,7 +99,8 @@ const MainListItems = (props) => {
       .then((data) => {
         console.log('still here')
         console.log(data)
-        // props.handleAdd(data.plantList);
+        props.handleAdd(data.plantList);
+        getMyPlants()
         setOpenDelete(false);
       })
       .catch(err => console.log('error in deleteplantclick', err));
