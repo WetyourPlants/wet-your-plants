@@ -102,6 +102,7 @@ export default function SignUp() {
         //sets your verification status to true to let the site know it is a valid signup
         return setSignedUp(true)
       })
+      .catch(err => console.log('error signing up', err))
   };
 
   //if signup is true this will redirect you to the dashboard component
