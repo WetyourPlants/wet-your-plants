@@ -80,15 +80,17 @@ const MainListItems = (props) => {
 
   const deletePlantClick = (info) => {
     const requestOptions = {
-      method: 'PUT',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: nickname,
+      body: JSON.stringify({ nickname }),
     };
     fetch('/deleteuserplant', requestOptions)
-      .then((res) => res.json())
+      // .then(data => console.log(data))
+      .then(res => res.json())
       .then((data) => {
         console.log('still here')
-        props.handleAdd(data.plantList);
+        console.log(data)
+        // props.handleAdd(data.plantList);
         setOpenDelete(false);
       })
       .catch(err => console.log('error in deleteplantclick', err));

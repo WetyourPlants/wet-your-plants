@@ -115,12 +115,13 @@ app.patch(
 );
 
 // delete Plant from the User Plant collection in the database
-app.put(
+app.patch(
   '/deleteuserplant',
   sessionController.isLoggedIn,
   userPlantController.deletePlant,
   (req, res) => {
-    res.status(200).json(res.locals.user);
+    console.log('wooooooOOOOOOOoooooo00000000000000000000oooOOOOOOooo!!!!!')
+    res.status(200).json("hello?");
   }
 );
 
