@@ -8,7 +8,6 @@ const userController = {};
 userController.createUser = (req, res, next) => {
   // NOTE: add .pre to user model to hash and use bcrypt on the password before it's sent to the database
   console.log('Inside createUser');
-
   User.create(
     {
       username: req.body.username,
@@ -24,7 +23,6 @@ userController.createUser = (req, res, next) => {
           message: `Error in the userController.createUser, check log for details `,
         });
       }
-
       res.locals.user = result;
       return next();
     }
@@ -61,7 +59,7 @@ userController.getUserPlants = (req, res, next) => {
     .then((user) => {
       // find the user and set the resl.locals.user to the user
       console.log(user);
-      console.log(user.plantList);
+      // console.log(user.plantList);
       res.locals.userPlants = user.plantList;
       return next();
     })

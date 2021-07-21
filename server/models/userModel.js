@@ -7,11 +7,11 @@ const bcrypt = require('bcryptjs');
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  email: String,
-  phone: String,
+  email: { type: String },
+  phone: { type: String },
   plantList: [
     {
-      nickname: { type: String },
+      nickname: { type: String, unique: true },
       planttype: { type: String },
       healthInfo: { type: String },
       schedule: { type: String },

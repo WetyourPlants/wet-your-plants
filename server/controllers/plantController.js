@@ -24,7 +24,7 @@ plantController.addPlant = (req, res, next) => {
 plantController.getPlants = (req, res, next) => {
   console.log('inside plant controller');
   Plant.find({}, 'name')
-    .exec()
+    // .exec()
     .then((plantNames) => {
       // console.log(plantNames.map((el) => el.name));
       res.locals.plantTypes = plantNames.map((el) => el.name);
@@ -36,6 +36,25 @@ plantController.getPlants = (req, res, next) => {
         message: `Error in the plantController.getPlants, check log for details `,
       });
     });
+};
+
+plantController.addCustomPlant = (req, res, next) => {
+  console.log('inside custom plant controller');
+  Plant.create(
+    {
+      name: req.body.species,
+      imageUrl: req.body.image,
+      desc: req.body.desc,
+      schedule: req.body.sched,
+    },
+    (err, result) => {
+      if (err) {
+        return next(err);
+      }
+      res.locals.plant = result;
+      return next();
+    }
+  );
 };
 
 module.exports = plantController;
